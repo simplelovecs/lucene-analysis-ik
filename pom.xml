@@ -13,6 +13,7 @@
 
     <properties>
         <lucene-analysis-ik.version>1.0.0</lucene-analysis-ik.version>
+        <lucene.version>6.4.1</lucene.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <assembly.descriptor>${project.basedir}/src/main/assemblies/assemble.xml</assembly.descriptor>
         <tests.rest.load_packaged>false</tests.rest.load_packaged>
@@ -73,6 +74,14 @@
     </repositories>
 
     <dependencies>
+
+        <!-- 手工添加lucene依赖开始-->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-smartcn</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <!-- 手工添加lucene依赖结束-->
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
