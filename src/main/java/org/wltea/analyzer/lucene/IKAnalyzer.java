@@ -42,6 +42,7 @@ public final class IKAnalyzer extends Analyzer{
 	 * 默认细粒度切分算法
 	 */
 	public IKAnalyzer(){
+		this.configuration = new Configuration();
 	}
 
     /**

@@ -1,11 +1,11 @@
 package org.wltea.analyzer.help;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.elasticsearch.common.logging.ESLoggerFactory;
 
 public class Sleep {
 
-	private static final Logger logger = ESLoggerFactory.getLogger(Sleep.class.getName());
+	private static final Logger logger = LogManager.getLogger(Sleep.class.getName());
 
 	public enum Type{MSEC,SEC,MIN,HOUR};
 	public static void sleep(Type type,int num){

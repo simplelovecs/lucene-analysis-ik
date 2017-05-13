@@ -3,23 +3,15 @@
  */
 package org.wltea.analyzer.cfg;
 
-import org.elasticsearch.common.inject.Inject;
-import org.elasticsearch.common.io.PathUtils;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
-import org.elasticsearch.plugin.analysis.ik.AnalysisIkPlugin;
 import org.wltea.analyzer.dic.Dictionary;
 
-import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Configuration {
 
-	private Environment environment;
-	private Settings settings;
-
 	//是否启用智能分词
-	private  boolean useSmart;
+	private  boolean useSmart=true;
 
 	//是否启用远程词典加载
 	private boolean enableRemoteDict=false;
@@ -27,25 +19,20 @@ public class Configuration {
 	//是否启用小写处理
 	private boolean enableLowercase=true;
 
-
-	@Inject
-	public Configuration(Environment env,Settings settings) {
-		this.environment = env;
-		this.settings=settings;
-
-		this.useSmart = settings.get("use_smart", "false").equals("true");
-		this.enableLowercase = settings.get("enable_lowercase", "true").equals("true");
-		this.enableRemoteDict = settings.get("enable_remote_dict", "true").equals("true");
-
+	public Configuration() {
 		Dictionary.initial(this);
-
 	}
 
-	public Path getConfigInPluginDir() {
-		return PathUtils
-				.get(new File(AnalysisIkPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath())
-						.getParent(), "config")
-				.toAbsolutePath();
+	public Configuration(boolean useSmart, boolean enableLowercase, boolean enableRemoteDict) {
+		this.useSmart = useSmart;
+		this.enableLowercase = enableLowercase;
+		this.enableRemoteDict = enableRemoteDict;
+
+		Dictionary.initial(this);
+	}
+
+	public Path getConfigDir() {
+		return Paths.get(".", "config");
 	}
 
 	public boolean isUseSmart() {
@@ -55,14 +42,6 @@ public class Configuration {
 	public Configuration setUseSmart(boolean useSmart) {
 		this.useSmart = useSmart;
 		return this;
-	}
-
-	public Environment getEnvironment() {
-		return environment;
-	}
-
-	public Settings getSettings() {
-		return settings;
 	}
 
 	public boolean isEnableRemoteDict() {

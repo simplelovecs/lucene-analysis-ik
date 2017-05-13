@@ -25,30 +25,23 @@
  */
 package org.wltea.analyzer.dic;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.elasticsearch.common.io.PathUtils;
-import org.elasticsearch.common.logging.ESLoggerFactory;
-import org.elasticsearch.plugin.analysis.ik.AnalysisIkPlugin;
-import org.wltea.analyzer.cfg.Configuration;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.wltea.analyzer.cfg.Configuration;
+import org.wltea.analyzer.help.PathUtils;
+
+import java.io.*;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -78,7 +71,7 @@ public class Dictionary {
 	 */
 	private Configuration configuration;
 
-	private static final Logger logger = ESLoggerFactory.getLogger(Monitor.class.getName());
+	private static final Logger logger = LogManager.getLogger(Monitor.class.getName());
 
 	private static ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
 
@@ -101,7 +94,7 @@ public class Dictionary {
 	private Dictionary(Configuration cfg) {
 		this.configuration = cfg;
 		this.props = new Properties();
-		this.conf_dir = cfg.getEnvironment().configFile().resolve(AnalysisIkPlugin.PLUGIN_NAME);
+		this.conf_dir = cfg.getConfigDir();
 		Path configFile = conf_dir.resolve(FILE_NAME);
 
 		InputStream input = null;
@@ -109,7 +102,7 @@ public class Dictionary {
 			logger.info("try load config from {}", configFile);
 			input = new FileInputStream(configFile.toFile());
 		} catch (FileNotFoundException e) {
-			conf_dir = cfg.getConfigInPluginDir();
+			conf_dir = cfg.getConfigDir();
 			configFile = conf_dir.resolve(FILE_NAME);
 			try {
 				logger.info("try load config from {}", configFile);
