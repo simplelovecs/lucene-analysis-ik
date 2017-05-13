@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 public class Configuration {
 
 	//是否启用智能分词
-	private  boolean useSmart=true;
+	private  boolean useSmart=false;
 
 	//是否启用远程词典加载
 	private boolean enableRemoteDict=false;
